@@ -1,8 +1,6 @@
 #**Behavioral Cloning** 
 
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+##Writeup Report
 
 ---
 
@@ -38,7 +36,7 @@ My project includes the following files:
 * model.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
-* writeup_report.md or writeup_report.pdf summarizing the results
+* writeup_report.md summarizing the results
 
 ####2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing 
@@ -48,25 +46,29 @@ python drive.py model.h5
 
 ####3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works. The data import process is followed by the preprocessing function and generator; which is followed by the model definition and execution function - and finally a model accuracy visualization through the history object.
 
 ###Model Architecture and Training Strategy
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model consists of a convolution neural network with two 5x5 filter sizes followed by two 3x3 filter sizes and depths between 24 and 64 (model.py lines 95-121) 
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model includes RELU layers to introduce nonlinearity (code line 101 and following each conv/fc layer), and the data is normalized in the model using a Keras lambda layer (code line 98). 
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21). 
+The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 35).
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+Half the data was randomly flipped (code line 54) to prevent a tendency for one direction or another.
+
+60% of data (along with the corresponding side cameras) with a steering angle of less than .2 radians was removed due to a prevelance of these steering angles. (code line 10-32)
+
+The left and right camera angles were imported with a dynamic, rather than static, offset. This resulted in incredibly strong performances on only one run of the track. While Udacity's classroom, as well as every student I know of, used a static offset (around .1 radians) to the left or right; I found that by increasing the offset more for the camera angle whose absolutely value needed to be increased (such that if a camera usually was offset by negative .1 and the center angle was already negative, the offset would be even greater than .1) I was getting better results with far less training data than classmates. By fine tuning the paramaters, and going through a lot of trigonometry, I found that keeping the angle whose absolute value needed to be decreased as a static offset and increasing the other by the angle multiplied by the angle over the maximum possible angle added to the original offset, I was getting a maximum possible offset of 2 times the angle plus the original offset. This is due to some basic trigonometry. If the goal that the steering angles are directing the car to is a static distance from the car, then the offsets for the two side cameras will be the same no matter where that goal is in relation to those angles. But if the goal for the car is much closer to the car - as it would be in a sharp turn - then the angle for the side camera whose absolute value needs to be increased ends up being double the center angle plus the original offset, which is determined by the distance between the cameras and the original distance to the hypothetical goal for the car. .1 was the assumption I made on the original offset as the car drove well when driving straight with that offset, but suffered on turns. The offset process can be found in code lines 38-57.
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 122).
 
 ####4. Appropriate training data
 

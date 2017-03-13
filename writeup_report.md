@@ -83,7 +83,7 @@ The overall strategy for deriving a model architecture was to implement a succes
 
 My second step was to use a convolution neural network model similar to the NVIDIA self driving car architecture. I thought this model might be appropriate because it is built specifically for self driving cars. I simplified down the depth and cut some layers, as a much simpler but similar model (my previous one) was working already.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training and validation set. This pretty much never changed regardless of whether or not the car was driving well, but anything below .1 and anything above .3 on either training or valdiation generally meant the model would perform poorly.
+In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training and validation set. This pretty much never changed regardless of whether or not the car was driving well, but anything below .1 and anything above .3 on either training or validation generally meant the model would perform poorly.
 
 The final step was to run the simulator to see how well the car was driving around track one. The vehicle did not ever fall off the track on track one. Track two required a rework of the architecture, and to get it to drive in a way that was not unsafe (as opposed to just not falling off) required fine tuning of the offcenter camera angle import process.
 

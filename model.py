@@ -42,13 +42,13 @@ def preprocessgen(path, angle, rightcenleft):
     image = np.array(cv2.cvtColor((cv2.imread(name)), cv2.COLOR_BGR2RGB))
     image = cv2.resize(image,(80, 40), interpolation=cv2.INTER_AREA)
     if angle < 0 and rightcenleft > 0:
-        angle = angle + correction
+        angle = angle * .928 + correction
     elif angle < 0 and rightcenleft < 0:
-        angle = angle - ((angle * angle)/.43) - correction
+        angle = angle * 1.78846 - correction
     elif angle > 0 and rightcenleft > 0:
-        angle = angle + ((angle * angle)/.43) + correction
+        angle = angle * 1.78846 + correction
     elif angle > 0 and rightcenleft < 0:
-        angle = angle - correction
+        angle = angle * .928 - correction
     else:
         angle = angle + (correction * rightcenleft)
     if random.randint(1, 10) >= 6:
